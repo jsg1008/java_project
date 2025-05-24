@@ -1,15 +1,21 @@
 package com.ruby.java.ch11;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 //Overflow 예외 클래스
 class OverflowException extends RuntimeException { // 교재 553
-
+	public OverflowException(String message) {
+		super(message);
+	}
 }
 
 //Underflow 예외 클래스
 class UnderflowException extends RuntimeException {
-
+	public UnderflowException(String message) {
+		super(message);
+	}
 }
 
 //Book 클래스
@@ -52,57 +58,67 @@ class Book implements Comparable<Book> {
 class Library {
 	static final int CAPACITY = 5; // 기본 용량을 5로 설정
 	private ArrayList<Book> books;
-	private int top ;
 
 	public Library() {
-		super();
 		this.books = new ArrayList<>(CAPACITY);
-		this.top = 0;
 	}
 
 	// 책 추가 (용량 초과 시 OverflowException 발생)
 	public void addBook(Book book) {
-		if (top > books.size()) {
-			books.add(book);
-		} return;
+		if (books.size()>=CAPACITY) {
+			throw new OverflowException("더 이상 책 추가 불가능")
+		} 
+		book.add(book);
 	}
 
 	// 책 삭제 (빈 목록에서 삭제 시 UnderflowException 발생)
 	public Book removeBook() {
-		books.remove();
-		return null ;
+		if(books.isEmpty() {
+			throw new UnderflowException("삭제할 책이 없음")
+		}
+		return books.remove(book.size();
 	}
 
 	public void printBooks(String msg) {
-		if (books.get(title)).equals(msg)) {
-			System.out.println(books.get(title));
-		} 
+		System.out.println(msg);
+		for (Book book : books) {
+			System.out.println(book);
+		}
 	}
 
 	public void sortBooksByTitle() {
-
+		Collections.sort(books);
 	}
 
 	public void sortBooksByISBN() {
+		 books.sort(Comparator.comparing(Book::getIsbn));
 		
 	}
 
 	public Book searchBookByTitle(String title) {
-		for ( int i = 0 ; i < books.size() ; i++) {
-			if (books[i].getTitle().equals(title)) {
-				return books[i];
+		for (Book book : books) {
+			if (book.getTitle().equals(title)) {
+				return book;
 			}
-		} return null;
+		}
+		return null;
 	}
 }
+//		for ( int i = 0 ; i < books.size() ; i++) {
+//			if (books.getTile().equals(title)) {
+//				return book;
+//			}
+//		} return null;
+//	}
+//}
 
 public class Test06 {
 	public static void main(String[] args) {
 		try {
 			String s = new String("java");
-			System.out.println(s.length());
+			System.out.println("문자열 길이: "+s.length());
 			s = null;
-			System.out.println(s.length());
+			System.out.println("문자열 길이: "+s.length());
 			int[] arr = new int[2];
 			arr[2] = 10;
 		} catch (ArrayIndexOutOfBoundsException e1) {// 교재534
@@ -128,8 +144,13 @@ public class Test06 {
 		Book book5 = new Book("리액트", "김춘추", 1999, "7");
 		Book book6 = new Book("스프링", "홍길동", 2025, "99");
 		// 예외 처리를 적용한 책 추가 및 삭제
-		try {
-
+		try { 
+			libraray.addBook(book1);
+			libraray.addBook(book2);
+			libraray.addBook(book3);
+			libraray.addBook(book4);
+			libraray.addBook(book5);
+			libraray.addBook(book6);
 			// 도서관의 용량을 초과하여 책을 추가 (예외 발생)
 		} catch (Exception e) {
 			e.getStackTrace();
@@ -139,6 +160,12 @@ public class Test06 {
 		library.printBooks("\n\n현재 도서 목록:");
 
 		try {
+			library.removeBook();	
+			library.removeBook();	
+			library.removeBook();	
+			library.removeBook();	
+			library.removeBook();	
+			library.removeBook();	
 			// 빈 도서관에서 책을 삭제 (예외 발생)
 
 		} catch (Exception e) {
